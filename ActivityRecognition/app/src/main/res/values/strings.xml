@@ -3,4 +3,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!--Strings for activity evaluation-->
+    <string name="standing">Standing</string>
+    <string name="laying">Laying</string>
+    <string name="moving">Moving</string>
+    <string name="unknown">Unknown</string>
 </resources>
