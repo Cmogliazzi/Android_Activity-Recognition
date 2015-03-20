@@ -69,14 +69,14 @@ public class MainActivity extends ActionBarActivity {
                 if(seconds == 0 || seconds == 30){
                         data[count] = serviceBind.collectData(millisUntilFinished);
                         count++;
-                        timer.setText("Minute has passed!");
+                        timer.setText("30 Seconds has passed!");
                 }
 
                 if(count == 4){
                     timer.setText("2 Minutes has passed!");
                     count = 0;
                     try{
-                        ActivityEvaluator.determineActivity(data);
+                        Log.d("DEBUG",ActivityEvaluator.determineActivity(data) + "");
                     } catch(Exception e){
                         e.printStackTrace();
                     }
@@ -84,7 +84,12 @@ public class MainActivity extends ActionBarActivity {
             }
             @Override
             public void onFinish() {
-                //Save one last time, and call Activity Eval again
+                data[count] = serviceBind.collectData(0);
+                try{
+                    ActivityEvaluator.determineActivity(data);
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
                 //SAVE TO FILE
             }
         }.start();
