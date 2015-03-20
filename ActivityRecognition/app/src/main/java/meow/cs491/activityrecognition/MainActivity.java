@@ -4,7 +4,11 @@ import android.app.Service;
 import android.content.Context;
 import android.location.Location;
 import android.os.CountDownTimer;
+<<<<<<< HEAD
+import android.os.Environment;
+=======
 import android.provider.ContactsContract;
+>>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +17,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DigitalClock;
 import android.widget.TextView;
+<<<<<<< HEAD
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+=======
 import android.view.View;
 import android.os.IBinder;
 import android.content.ComponentName;
@@ -22,6 +33,7 @@ import meow.cs491.activityrecognition.ActivityService.MyLocalBinder;
 
 import java.util.ArrayList;
 import java.util.Date;
+>>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
 import java.util.concurrent.TimeUnit;
 
 
@@ -111,6 +123,52 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+<<<<<<< HEAD
+    private boolean writeToFile(String filename, Object ... data) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+            Log.d("Yip", "Checking for directory. Creating if needed.");
+            // Creating directory if it doesn't exist
+            File dir = new File(Environment.getExternalStorageDirectory(), "cs491");
+            if (!dir.exists()) dir.mkdir();
+
+            Log.d("Yip", "Checking for file. Creating if needed.");
+            // Writing data to file
+            File outputFile = new File(dir, filename);
+            if (!outputFile.exists()) {
+                try {
+                    outputFile.createNewFile();
+                } catch (IOException e) {
+                    Log.e("Yip", e.getMessage());
+                    return false;
+                }
+            }
+
+            Log.d("Yip", "Writing to file: " + outputFile.toString());
+            FileOutputStream fOut;
+            try {
+                fOut = new FileOutputStream(outputFile);
+                for (Object o:data) {
+                    fOut.write((o.toString() + "\n").getBytes());
+                }
+                fOut.flush();
+                fOut.close();
+            } catch (FileNotFoundException e) {
+                Log.e("Yip", e.getMessage());
+                return false;
+            } catch (IOException e) {
+                Log.e("Yip", e.getMessage());
+                return false;
+            }
+
+            return true;
+
+        } else {
+            Log.e("Yip","External storage not mounted.");
+            return false;
+        }
+    }
+=======
     private ServiceConnection bindToService = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -124,4 +182,5 @@ public class MainActivity extends ActionBarActivity {
             isBound = false;
         }
     };
+>>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
 }
