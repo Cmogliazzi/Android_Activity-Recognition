@@ -1,13 +1,19 @@
 package meow.cs491.activityrecognition;
 
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DigitalClock;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -64,5 +70,50 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean writeToFile(String filename, Object ... data) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+            Log.d("Yip", "Checking for directory. Creating if needed.");
+            // Creating directory if it doesn't exist
+            File dir = new File(Environment.getExternalStorageDirectory(), "cs491");
+            if (!dir.exists()) dir.mkdir();
+
+            Log.d("Yip", "Checking for file. Creating if needed.");
+            // Writing data to file
+            File outputFile = new File(dir, filename);
+            if (!outputFile.exists()) {
+                try {
+                    outputFile.createNewFile();
+                } catch (IOException e) {
+                    Log.e("Yip", e.getMessage());
+                    return false;
+                }
+            }
+
+            Log.d("Yip", "Writing to file: " + outputFile.toString());
+            FileOutputStream fOut;
+            try {
+                fOut = new FileOutputStream(outputFile);
+                for (Object o:data) {
+                    fOut.write((o.toString() + "\n").getBytes());
+                }
+                fOut.flush();
+                fOut.close();
+            } catch (FileNotFoundException e) {
+                Log.e("Yip", e.getMessage());
+                return false;
+            } catch (IOException e) {
+                Log.e("Yip", e.getMessage());
+                return false;
+            }
+
+            return true;
+
+        } else {
+            Log.e("Yip","External storage not mounted.");
+            return false;
+        }
     }
 }

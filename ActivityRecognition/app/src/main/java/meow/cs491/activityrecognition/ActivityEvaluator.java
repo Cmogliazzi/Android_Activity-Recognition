@@ -30,11 +30,11 @@ public class ActivityEvaluator {
             }
         }
 
-        if (moving > standing && moving > laying && moving > unknown) {
+        if (moving >= standing && moving >= laying && moving >= unknown) {
             return PhysicalActivity.MOVING;
-        } else if (standing > moving && standing > laying && standing > unknown) {
+        } else if (standing >= moving && standing >= laying && standing >= unknown) {
             return PhysicalActivity.STANDING;
-        } else if (laying > moving && laying > standing && laying > unknown) {
+        } else if (laying >= moving && laying >= standing && laying >= unknown) {
             return PhysicalActivity.LAYING;
         } else {
             return PhysicalActivity.UNKNOWN;
