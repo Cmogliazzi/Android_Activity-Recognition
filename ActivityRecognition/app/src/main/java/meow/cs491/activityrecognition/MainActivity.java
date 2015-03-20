@@ -4,11 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.location.Location;
 import android.os.CountDownTimer;
-<<<<<<< HEAD
 import android.os.Environment;
-=======
 import android.provider.ContactsContract;
->>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,13 +14,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DigitalClock;
 import android.widget.TextView;
-<<<<<<< HEAD
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-=======
 import android.view.View;
 import android.os.IBinder;
 import android.content.ComponentName;
@@ -33,7 +28,7 @@ import meow.cs491.activityrecognition.ActivityService.MyLocalBinder;
 
 import java.util.ArrayList;
 import java.util.Date;
->>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -118,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< HEAD
+
     private boolean writeToFile(String filename, Object ... data) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
@@ -163,7 +158,7 @@ public class MainActivity extends ActionBarActivity {
             return false;
         }
     }
-=======
+
     private ServiceConnection bindToService = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -177,5 +172,4 @@ public class MainActivity extends ActionBarActivity {
             isBound = false;
         }
     };
->>>>>>> ee8a6bf684475c5568335644ffb1fbf2f209307f
 }
