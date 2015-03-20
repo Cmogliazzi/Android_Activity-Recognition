@@ -44,14 +44,14 @@ public class ActivityEvaluator {
     // Accelerometer y-axis > 5
     // No change in Location
     static public boolean isLaying(DataPoint dataPoint1, DataPoint dataPoint2) {
-        double avgAccel = (dataPoint1.yAcceleration + dataPoint2.yAcceleration) / 2;
+        double avgAccel = (Math.abs(dataPoint1.yAcceleration) + Math.abs(dataPoint2.yAcceleration)) / 2;
         return dataPoint1.location.distanceTo(dataPoint2.location) <= NO_MOVEMENT_LIMIT && avgAccel > ORIENTATION_LIMIT;
     }
 
     // Accelerometer y-axis <=5
     // No change in Location
     static public boolean isStanding(DataPoint dataPoint1, DataPoint dataPoint2) {
-        double avgAccel = (dataPoint1.yAcceleration + dataPoint2.yAcceleration) / 2;
+        double avgAccel = (Math.abs(dataPoint1.yAcceleration) + Math.abs(dataPoint2.yAcceleration)) / 2;
         return dataPoint1.location.distanceTo(dataPoint2.location) <= NO_MOVEMENT_LIMIT && avgAccel <= ORIENTATION_LIMIT;
     }
 
