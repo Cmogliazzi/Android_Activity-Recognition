@@ -8,63 +8,67 @@
     android:id="@+id/relative_layout">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="12:00 PM – 12: 02 PM Walking"
         android:id="@+id/tv1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="50dp"
+        android:text="..."
+        android:gravity="center"/>
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="12:02 PM – 12: 04 PM Sleeping"
         android:id="@+id/tv2"
         android:layout_below="@+id/tv1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="12:04 PM – 12: 06 PM Standing"
         android:id="@+id/tv3"
         android:layout_below="@+id/tv2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="..." />
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="12:06 PM – 12: 08 PM Sleeping"
         android:id="@+id/tv4"
         android:layout_below="@+id/tv3"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="12:08 PM – 12: 10 PM Walking"
         android:id="@+id/tv5"
         android:layout_below="@+id/tv4"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Start Service"
         android:id="@+id/btnStart"
-        android:layout_below="@+id/tv5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="122dp" />
+        android:layout_above="@+id/tvTimer"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:gravity="center"
@@ -72,6 +76,70 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvTimer"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tv6"
+        android:layout_below="@+id/tv5"
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_marginTop="5dp"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tv7"
+        android:layout_below="@+id/tv6"
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
+
+    <TextView        android:layout_marginTop="10dp"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tv8"
+        android:layout_below="@+id/tv7"
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
+
+    <TextView        android:layout_marginTop="10dp"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tv9"
+        android:layout_below="@+id/tv8"
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tv10"
+        android:layout_below="@+id/tv9"
+        android:layout_centerHorizontal="true"
+        android:text="..."
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Press &quot;Start Service&quot; when ready"
+        android:id="@+id/tvStatus"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

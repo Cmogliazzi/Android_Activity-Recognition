@@ -23,7 +23,8 @@ public class ActivityService extends Service implements SensorEventListener, Loc
     private SensorManager sensormanager;
     private LocationManager locationmanager;
     private float yVal;
-    private Location location;
+    private Location location,DELETELocation;
+    int count = 0;
 
     public ActivityService() {}
     public void turnOnServices(Context c){
@@ -32,7 +33,11 @@ public class ActivityService extends Service implements SensorEventListener, Loc
         accelerometer = sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         sensormanager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        locationmanager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, Criteria.ACCURACY_FINE, this);
+        Criteria locationCriteria = new Criteria();
+        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
+        String provider = locationmanager.getBestProvider(locationCriteria, true);
+        locationmanager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, 0, this);
+        Log.d("DEBUG", "Providr is: " + provider);
     }
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,7 +56,18 @@ public class ActivityService extends Service implements SensorEventListener, Loc
 
     @Override
     public void onLocationChanged(Location location) {
+        count ++;
+        if(count == 1)
+            DELETELocation = location;
+        if (count == 20){
+            //Log.d("DEBUG", "Distance from previous: " + this.DELETELocation.distanceTo(location));
+            count = 0;
+
+        }
+
         this.location = location;
+        Log.d("DEBUG", "NEW LOCATION: " );//+ location.getLongitude() + " " + location.getLatitude());
+
     }
 
     @Override

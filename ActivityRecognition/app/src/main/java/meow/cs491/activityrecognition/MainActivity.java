@@ -24,9 +24,15 @@ import android.os.IBinder;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import meow.cs491.activityrecognition.ActivityService.MyLocalBinder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import java.util.concurrent.TimeUnit;
@@ -36,9 +42,13 @@ public class MainActivity extends ActionBarActivity {
 
 
     ActivityService serviceBind;
-    boolean isBound = false;
-    TextView timer;
+    boolean isBound = false, isTimerRunning = false;
+    TextView timer,status;
     DataPoint [] data = new DataPoint[4];
+    TextView [] TV = new TextView[10];
+    String [] activities = new String[10];
+    int textViewCount = 0;
+    Button btn;
 
 
     @Override
@@ -46,7 +56,20 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         timer = (TextView)findViewById(R.id.tvTimer);
-        Button btn = (Button)findViewById(R.id.btnStart);
+        status = (TextView)findViewById(R.id.tvStatus);
+         btn = (Button)findViewById(R.id.btnStart);
+
+
+            TV[0]=(TextView)findViewById(R.id.tv1);
+            TV[1]=(TextView)findViewById(R.id.tv2);
+            TV[2]=(TextView)findViewById(R.id.tv3);
+            TV[3]=(TextView)findViewById(R.id.tv4);
+            TV[4]=(TextView)findViewById(R.id.tv5);
+            TV[5]=(TextView)findViewById(R.id.tv6);
+            TV[6]=(TextView)findViewById(R.id.tv7);
+            TV[7]=(TextView)findViewById(R.id.tv8);
+            TV[8]=(TextView)findViewById(R.id.tv9);
+            TV[9]=(TextView)findViewById(R.id.tv10);
 
 
 
@@ -56,50 +79,35 @@ public class MainActivity extends ActionBarActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            serviceBind.turnOnServices(getApplicationContext());
-            startTimer();
+                if(isTimerRunning){
+                    stopTimer();
+                }
+                else{
+                    serviceBind.turnOnServices(getApplicationContext());
+                    startTimer();
+                }
+
             }
         });
     }
 
-    public void startTimer(){
-        new CountDownTimer(600000,1000) {
-            int count = 0;
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timer.setText("" + String.format("%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
-                ));
-                long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished));
-                if(seconds == 0 || seconds == 30){
-                        data[count] = serviceBind.collectData(millisUntilFinished);
-                        count++;
-                        timer.setText("30 Seconds has passed!");
-                }
 
-                if(count == 4){
-                    timer.setText("2 Minutes has passed!");
-                    count = 0;
-                    try{
-                        Log.d("DEBUG",ActivityEvaluator.determineActivity(data) + "");
-                    } catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-            @Override
-            public void onFinish() {
-                data[count] = serviceBind.collectData(0);
-                try{
-                    ActivityEvaluator.determineActivity(data);
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
-                //SAVE TO FILE
-            }
-        }.start();
+    public void stopTimer(){
+        status.setText("Select 'Start Service' to restart");
+        timer.setText("20:00");
+        isTimerRunning = false;
+        btn.setText("Start Timer");
+        cdTimer.onFinish();
+        cdTimer.cancel();
+        writeToFile("ActivityOutput.txt", activities);
+    }
+
+    public void startTimer(){
+        status.setText("Collecting data...");
+        isTimerRunning = true;
+        cdTimer.start();
+        btn.setText("Stop Timer");
+
 
     }
     @Override
@@ -125,6 +133,7 @@ public class MainActivity extends ActionBarActivity {
             Log.d("Yip", "Checking for directory. Creating if needed.");
             // Creating directory if it doesn't exist
             File dir = new File(Environment.getExternalStorageDirectory(), "cs491");
+            Log.d("DEBUG", "Writing to: " + Environment.getExternalStorageDirectory());
             if (!dir.exists()) dir.mkdir();
 
             Log.d("Yip", "Checking for file. Creating if needed.");
@@ -144,6 +153,7 @@ public class MainActivity extends ActionBarActivity {
             try {
                 fOut = new FileOutputStream(outputFile);
                 for (Object o:data) {
+                    if (o != null)
                     fOut.write((o.toString() + "\n").getBytes());
                 }
                 fOut.flush();
@@ -155,13 +165,15 @@ public class MainActivity extends ActionBarActivity {
                 Log.e("Yip", e.getMessage());
                 return false;
             }
-
+            Log.d("DEBUG","File Created");
             return true;
 
         } else {
             Log.e("Yip","External storage not mounted.");
             return false;
         }
+
+
     }
 
     private ServiceConnection bindToService = new ServiceConnection() {
@@ -177,4 +189,57 @@ public class MainActivity extends ActionBarActivity {
             isBound = false;
         }
     };
+
+    CountDownTimer cdTimer = new CountDownTimer(1200000,1000) {
+        int count = 0;
+        @Override
+        public void onTick(long millisUntilFinished) {
+            timer.setText("" + String.format("%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+            ));
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished));
+
+
+            if(seconds == 0 || seconds == 30){
+                data[count] = serviceBind.collectData(millisUntilFinished);
+                count++;
+            }
+
+            if(count == 4){
+                count = 0;
+                try{
+                    Log.d("DEBUG", ActivityEvaluator.determineActivity(data) + "");
+                    printActivity(ActivityEvaluator.determineActivity(data));
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        @Override
+        public void onFinish() {
+            data[count] = serviceBind.collectData(0);
+            try{
+                printActivity(ActivityEvaluator.determineActivity(data));
+                stopTimer();
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+
+    public void printActivity(ActivityEvaluator.PhysicalActivity activity){
+        long currentTime = System.currentTimeMillis();
+        Date currentDate = new Date(currentTime );
+        String enddate  = new SimpleDateFormat("hh:mm a").format(currentDate );
+        currentDate.setTime(currentTime - 119900);
+        String startdate = new SimpleDateFormat("hh:mm a").format(currentDate);
+
+        TV[textViewCount % 10].setText(startdate + " - " + enddate + " " + activity);
+        activities[textViewCount % 10] = startdate + " - " + enddate + " " + activity;
+        textViewCount++;
+    }
 }
