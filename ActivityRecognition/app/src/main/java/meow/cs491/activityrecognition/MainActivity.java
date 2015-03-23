@@ -71,11 +71,6 @@ public class MainActivity extends ActionBarActivity {
             TV[8]=(TextView)findViewById(R.id.tv9);
             TV[9]=(TextView)findViewById(R.id.tv10);
 
-
-
-        Intent i = new Intent(this, ActivityService.class);
-        bindService(i, bindToService, Context.BIND_AUTO_CREATE);
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
                     stopTimer();
                 }
                 else{
-                    serviceBind.turnOnServices(getApplicationContext());
                     startTimer();
                 }
 
@@ -93,6 +87,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void stopTimer(){
+        unbindService(bindToService);
         status.setText("Select 'Start Service' to restart");
         timer.setText("20:00");
         isTimerRunning = false;
@@ -103,6 +98,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startTimer(){
+        Intent i = new Intent(this, ActivityService.class);
+        bindService(i, bindToService, Context.BIND_AUTO_CREATE);
+//        serviceBind.turnOnServices(getApplicationContext());
         status.setText("Collecting data...");
         isTimerRunning = true;
         cdTimer.start();
@@ -219,12 +217,15 @@ public class MainActivity extends ActionBarActivity {
         }
         @Override
         public void onFinish() {
-            data[count] = serviceBind.collectData(0);
-            try{
-                printActivity(ActivityEvaluator.determineActivity(data));
-                stopTimer();
-            } catch(Exception e){
-                e.printStackTrace();
+            if (count == 3){
+                try{
+                    data[count] = serviceBind.collectData(0);
+                    printActivity(ActivityEvaluator.determineActivity(data));
+                    stopTimer();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+
             }
 
         }

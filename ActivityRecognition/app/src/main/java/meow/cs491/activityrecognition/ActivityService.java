@@ -23,28 +23,30 @@ public class ActivityService extends Service implements SensorEventListener, Loc
     private SensorManager sensormanager;
     private LocationManager locationmanager;
     private float yVal;
-    private Location location,DELETELocation;
-    int count = 0;
+    String provider;
+    private Location location;
 
-    public ActivityService() {}
-    public void turnOnServices(Context c){
-       locationmanager = (LocationManager) c.getSystemService(c.LOCATION_SERVICE);
-       sensormanager = (SensorManager) c.getSystemService(c.SENSOR_SERVICE);
-        accelerometer = sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+    public ActivityService() {
 
-        sensormanager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        Criteria locationCriteria = new Criteria();
-        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = locationmanager.getBestProvider(locationCriteria, true);
-        locationmanager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, 0, this);
-        Log.d("DEBUG", "Providr is: " + provider);
     }
     @Override
     public IBinder onBind(Intent intent) {
+        locationmanager = (LocationManager) getApplicationContext().getSystemService(getApplicationContext().LOCATION_SERVICE);
+        sensormanager = (SensorManager) getApplicationContext().getSystemService(getApplicationContext().SENSOR_SERVICE);
+        accelerometer = sensormanager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensormanager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        Criteria locationCriteria = new Criteria();
+        locationCriteria.setAccuracy(Criteria.ACCURACY_FINE);
+        provider = locationmanager.getBestProvider(locationCriteria, true);
+        locationmanager.requestLocationUpdates(provider,0, 0, this);
+        Log.d("DEBUG", "Provider is: " + provider);
         return bindService;
     }
 
    public DataPoint collectData(long time){
+       if (location == null){
+          location =  locationmanager.getLastKnownLocation(provider);
+       }
        return new DataPoint(time,location,yVal);
    }
 
@@ -56,17 +58,8 @@ public class ActivityService extends Service implements SensorEventListener, Loc
 
     @Override
     public void onLocationChanged(Location location) {
-        count ++;
-        if(count == 1)
-            DELETELocation = location;
-        if (count == 20){
-            //Log.d("DEBUG", "Distance from previous: " + this.DELETELocation.distanceTo(location));
-            count = 0;
-
-        }
-
         this.location = location;
-        Log.d("DEBUG", "NEW LOCATION: " );//+ location.getLongitude() + " " + location.getLatitude());
+        //Log.d("DEBUG", "NEW LOCATION: " );
 
     }
 
