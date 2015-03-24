@@ -62,7 +62,7 @@ public class ActivityEvaluator{
     // Accelerometer y-axis doesn't matter
     // Location is different
     static public boolean isMoving(DataPoint dataPoint1, DataPoint dataPoint2) {
-       // Log.d("DEBUG", dataPoint1.location.distanceTo(dataPoint2.location) + "");
+        //Log.d("DEBUG", dataPoint1.location.distanceTo(dataPoint2.location) + " = Distance");
         return dataPoint1.location.distanceTo(dataPoint2.location) > NO_MOVEMENT_LIMIT;
     }
 

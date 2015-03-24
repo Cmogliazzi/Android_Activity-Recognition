@@ -1,18 +1,14 @@
 package meow.cs491.activityrecognition;
 
-import android.app.Service;
 import android.content.Context;
-import android.location.Location;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.DigitalClock;
 import android.widget.TextView;
 
 import java.io.File;
@@ -24,15 +20,11 @@ import android.os.IBinder;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 import meow.cs491.activityrecognition.ActivityService.MyLocalBinder;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import java.util.concurrent.TimeUnit;
